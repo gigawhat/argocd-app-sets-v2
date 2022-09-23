@@ -1,8 +1,11 @@
 locals {
+  # the number of managed clusters to create
   numClusters = 1
+  # create list of cluster names
   clusterNames = [
     for i in random_pet.clusterNames : i.id
   ]
+  # argocd helm values
   argocd_values = {
     server = {
       service = {
@@ -32,6 +35,7 @@ locals {
       }
     }
   }
+  # argocd-apps helm values
   argocd_apps_values = {
     applications = [
       {
@@ -55,7 +59,7 @@ locals {
   }
 }
 
-# Create mgmt cluster and deploy argocd
+# Create mgmt cluster
 resource "digitalocean_kubernetes_cluster" "mgmt" {
   name    = "mgmt"
   region  = "sfo3"
@@ -67,10 +71,12 @@ resource "digitalocean_kubernetes_cluster" "mgmt" {
   }
 }
 
+# lookup node ip address
 data "digitalocean_droplet" "mgmt" {
   id = digitalocean_kubernetes_cluster.mgmt.node_pool[0].nodes[0].droplet_id
 }
 
+# deploy argocd to mgmt cluster
 resource "helm_release" "argocd" {
   provider         = helm.mgmt
   name             = "argocd"
@@ -85,6 +91,7 @@ resource "helm_release" "argocd" {
   ]
 }
 
+# deploy argocd parent app
 resource "helm_release" "argocd-apps" {
   provider         = helm.mgmt
   name             = "argocd-apps"
@@ -99,10 +106,12 @@ resource "helm_release" "argocd-apps" {
   ]
 }
 
+# create random pet names for clusters
 resource "random_pet" "clusterNames" {
   count = local.numClusters
 }
 
+# create managed clusters
 resource "digitalocean_kubernetes_cluster" "clusters" {
   for_each = toset(local.clusterNames)
   name     = each.key
@@ -115,10 +124,7 @@ resource "digitalocean_kubernetes_cluster" "clusters" {
   }
 }
 
+# output argocd url because I'm too lazy to look it up
 output "argocd_url" {
   value = "https://${data.digitalocean_droplet.mgmt.ipv4_address}:30443"
-}
-
-output "foo" {
-  value = local.clusterNames
 }
