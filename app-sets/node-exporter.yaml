@@ -7,7 +7,7 @@ spec:
     - clusters: {} # Automatically use all clusters defined within Argo CD
   template:
     metadata:
-      name: "{{cluster}}-node-exporter"
+      name: "{{cluster.name}}-node-exporter"
       namespace: argo-cd
     spec:
       project: default
