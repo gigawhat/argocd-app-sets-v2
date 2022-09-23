@@ -7,7 +7,7 @@ spec:
     - clusters: {} # Automatically use all clusters defined within Argo CD
   template:
     metadata:
-      name: "{{cluster.name}}-node-exporter"
+      name: "{{name}}-node-exporter"
       namespace: argo-cd
     spec:
       project: default
@@ -16,7 +16,7 @@ spec:
         chart: prometheus-node-exporter
         targetRevision: 4.3.0
       destination:
-        server: "{{cluster.server}}"
+        server: "{{server}}"
         namespace: node-exporter
       syncPolicy:
         automated: {}
