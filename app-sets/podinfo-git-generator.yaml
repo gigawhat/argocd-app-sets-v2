@@ -10,20 +10,30 @@ spec:
         revision: HEAD
         files:
           - path: clusters/**/config.yaml
+        template:
+          metadata:
+            name: "{{cluster.name}}-podinfo"
+            namespace: argo-cd
+          spec:
+            project: default
+            source:
+              repoURL: https://stefanprodan.github.io/podinfo
+              chart: podinfo
+              targetRevision: "{{ podinfo.chartVersion }}"
+              helm:
+                valueFiles:
+                  - "clusters/{{cluster.name}}/values-podinfo.yaml"
+            destination:
+              server: "{{cluster.server}}"
+              namespace: podinfo
+            syncPolicy:
+              automated: {}
+              syncOptions:
+                - CreateNamespace=true
   template:
-    metadata:
-      name: "{{cluster.name}}-podinfo"
-      namespace: argo-cd
+    metadata: {}
     spec:
-      project: default
+      destination: {}
+      project: ""
       source:
-        repoURL: https://stefanprodan.github.io/podinfo
-        chart: podinfo
-        targetRevision: "{{ podinfo.chartVersion }}"
-      destination:
-        server: "{{cluster.server}}"
-        namespace: podinfo
-      syncPolicy:
-        automated: {}
-        syncOptions:
-          - CreateNamespace=true
+        repoURL: ""
