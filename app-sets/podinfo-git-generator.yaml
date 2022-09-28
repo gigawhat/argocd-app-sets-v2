@@ -24,7 +24,7 @@ spec:
         #   valueFiles:
         #     - "clusters/{{cluster.name}}/values-podinfo.yaml"
       destination:
-        server: “{{cluster.server}}”
+        server: "{{cluster.server}}"
         namespace: podinfo
       syncPolicy:
         automated: {}
