@@ -134,17 +134,14 @@ resource "local_file" "clusterconfig" {
   for_each = digitalocean_kubernetes_cluster.clusters
   content = yamlencode({
     cluster = {
-      name    = each.value.name
-      address = each.value.endpoint
+      name   = each.value.name
+      server = each.value.endpoint
     }
     podinfo = {
       chartVersion = ""
     }
   })
   filename = "${path.module}/../clusters/${each.key}/config.yaml"
-  ignore_changes = [
-    content,
-  ]
 }
 
 # output argocd url because I'm too lazy to look it up
