@@ -22,7 +22,7 @@ spec:
         targetRevision: "{{ podinfo.chartVersion }}"
         helm:
           valueFiles:
-            - "clusters/{{cluster.name}}/values-podinfo.yaml"
+            - "{{path}}/values-podinfo.yaml"
       destination:
         server: "{{cluster.server}}"
         namespace: podinfo
