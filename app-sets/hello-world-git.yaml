@@ -19,7 +19,7 @@ spec:
       source:
         repoURL: https://github.com/gigawhat/argocd-app-sets-v2.git
         chart: hello-world
-        targetRevision: HEAD
+        targetRevision: 6749da0b
         helm:
           valueFiles:
             - "values-{{cluster.name}}.yaml"
