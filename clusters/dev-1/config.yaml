@@ -1,0 +1,5 @@
+"cluster":
+  "address": "https://462422db-5233-446f-b7d2-2644caed0180.k8s.ondigitalocean.com"
+  "name": "dev-1"
+"podinfo":
+  "chartVersion": "6.2.0"

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: prometheus-operator
+  name: podinfo
   namespace: argo-cd
 spec:
   generators:
@@ -9,21 +9,23 @@ spec:
         repoURL: https://github.com/fsstack/argocd-sandbox.git
         revision: HEAD
         files:
-          - path: “clusters/**/config.json”
+          - path: “clusters/**/config.yaml
   template:
     metadata:
-      name: “{{cluster.name}}-prometheus-operator”
+      name: “{{cluster.name}}-podinfor”
       namespace: argo-cd
-      annotations:
-        argocd.argoproj.io/sync-wave: “-100”
     spec:
       project: default
       source:
-        repoURL: https://github.com/fsstack/argocd-sandbox.git
-        path: addons/prometheus-operator-{{prometheus_operator.version}}
+        repoURL: https://stefanprodan.github.io/podinfo
+        chart: podinfo
+        targetRevision: "{{ podinfo.chartVersion }}"
+        helm:
+          valueFiles:
+            - "clusters/{{cluster.name}}/values-podinfo.yaml"
       destination:
         server: “{{cluster.server}}”
-        namespace: prometheus-operator
+        namespace: podinfo
       syncPolicy:
         automated: {}
         syncOptions:

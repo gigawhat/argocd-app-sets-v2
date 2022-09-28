@@ -12,6 +12,10 @@ terraform {
       source  = "hashicorp/helm"
       version = "2.6.0"
     }
+    local = {
+      source  = "hashicorp/local"
+      version = "2.2.3"
+    }
   }
 }
 
@@ -28,4 +32,7 @@ provider "helm" {
     token                  = digitalocean_kubernetes_cluster.mgmt.kube_config[0].token
     cluster_ca_certificate = base64decode(digitalocean_kubernetes_cluster.mgmt.kube_config[0].cluster_ca_certificate)
   }
+}
+
+provider "local" {
 }

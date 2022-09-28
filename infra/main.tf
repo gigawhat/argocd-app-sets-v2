@@ -129,11 +129,25 @@ resource "digitalocean_kubernetes_cluster" "clusters" {
   }
 }
 
+# create cluster config file for each cluster
+resource "local_file" "clusterconfig" {
+  for_each = digitalocean_kubernetes_cluster.clusters
+  content = yamlencode({
+    cluster = {
+      name    = each.value.name
+      address = each.value.endpoint
+    }
+    podinfo = {
+      chartVersion = ""
+    }
+  })
+  filename = "${path.module}/../clusters/${each.key}/config.yaml"
+  ignore_changes = [
+    content,
+  ]
+}
+
 # output argocd url because I'm too lazy to look it up
 output "argocd_url" {
   value = "https://${data.digitalocean_droplet.mgmt.ipv4_address}:30443"
-}
-
-output "clusters" {
-  value = local.clusters
 }

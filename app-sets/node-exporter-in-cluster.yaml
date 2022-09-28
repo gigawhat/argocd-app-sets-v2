@@ -4,7 +4,7 @@ metadata:
   name: node-exporter
 spec:
   generators:
-    - clusters: {} # Automatically use all clusters defined within Argo CD
+    - clusters: {}
   template:
     metadata:
       name: "{{name}}-node-exporter"
