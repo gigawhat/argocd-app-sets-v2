@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: podinfo
+  name: hello-world
   namespace: argo-cd
 spec:
   generators:
