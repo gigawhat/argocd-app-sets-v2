@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: podinfo
+  namespace: argo-cd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/gigawhat/argocd-app-sets-v2.git
+        revision: HEAD
+        files:
+          - path: clusters/**/config.yaml
+  template:
+    metadata:
+      name: "{{cluster.name}}-hello-world"
+      namespace: argo-cd
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/gigawhat/argocd-app-sets-v2.git
+        chart: hello-world
+        targetRevision: HEAD
+        helm:
+          valueFiles:
+            - "values-{{cluster.name}}.yaml"
+      destination:
+        server: "{{cluster.server}}"
+        namespace: hello-world
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
