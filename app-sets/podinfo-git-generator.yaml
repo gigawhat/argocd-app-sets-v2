@@ -20,9 +20,6 @@ spec:
         repoURL: https://stefanprodan.github.io/podinfo
         chart: podinfo
         targetRevision: "{{ podinfo.chartVersion }}"
-        helm:
-          valueFiles:
-            - "clusters/{{cluster.name}}/values-podinfo.yaml"
       destination:
         server: "{{cluster.server}}"
         namespace: podinfo
