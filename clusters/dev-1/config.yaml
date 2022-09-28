@@ -2,4 +2,4 @@
   "name": "dev-1"
   "server": "https://450dc0f8-5303-4cb8-a73d-0264c4ffbd2b.k8s.ondigitalocean.com"
 "podinfo":
-  "chartVersion": ""
+  "chartVersion": "6.2.0"

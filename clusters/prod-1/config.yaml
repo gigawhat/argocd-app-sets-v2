@@ -2,4 +2,4 @@
   "name": "prod-1"
   "server": "https://15200c60-b694-4128-97ac-e663d4d661b5.k8s.ondigitalocean.com"
 "podinfo":
-  "chartVersion": ""
+  "chartVersion": "6.2.0"

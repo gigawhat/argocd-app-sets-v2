@@ -4,15 +4,26 @@ locals {
       labels = {
         stage = "dev"
       }
+      podinfo = {
+        chartVersion = "6.2.0"
+      }
     }
     dev-2 = {
       labels = {
         stage = "dev"
-    } }
+      }
+      podinfo = {
+        chartVersion = "6.2.0"
+      }
+    }
     prod-1 = {
       labels = {
         stage = "prod"
-    } }
+      }
+      podinfo = {
+        chartVersion = "6.2.0"
+      }
+    }
   }
   # argocd helm values
   argocd_values = {
@@ -138,7 +149,7 @@ resource "local_file" "clusterconfig" {
       server = each.value.endpoint
     }
     podinfo = {
-      chartVersion = ""
+      chartVersion = local.clusters[each.value.name].podinfo.chartVersion
     }
   })
   filename = "${path.module}/../clusters/${each.key}/config.yaml"
