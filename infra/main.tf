@@ -8,14 +8,14 @@ locals {
         chartVersion = "6.2.0"
       }
     }
-    dev-2 = {
-      labels = {
-        stage = "dev"
-      }
-      podinfo = {
-        chartVersion = "6.2.0"
-      }
-    }
+    # dev-2 = {
+    #   labels = {
+    #     stage = "dev"
+    #   }
+    #   podinfo = {
+    #     chartVersion = "6.2.0"
+    #   }
+    # }
     prod-1 = {
       labels = {
         stage = "prod"
@@ -154,6 +154,7 @@ resource "local_file" "clusterconfig" {
   })
   filename = "${path.module}/../clusters/${each.key}/config.yaml"
 }
+
 
 # output argocd url because I'm too lazy to look it up
 output "argocd_url" {
