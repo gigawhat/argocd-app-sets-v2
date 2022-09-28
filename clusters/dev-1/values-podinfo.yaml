@@ -1,0 +1,3 @@
+logLevel: debug
+ui:
+  message: "dev-1"
