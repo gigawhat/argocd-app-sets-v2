@@ -1,10 +1,19 @@
 locals {
-  # the number of managed clusters to create
-  numClusters = 1
-  # create list of cluster names
-  clusterNames = [
-    for i in random_pet.clusterNames : i.id
-  ]
+  clusters = {
+    dev-1 = {
+      labels = {
+        stage = "dev"
+      }
+    }
+    dev-2 = {
+      labels = {
+        stage = "dev"
+    } }
+    prod-1 = {
+      labels = {
+        stage = "prod"
+    } }
+  }
   # argocd helm values
   argocd_values = {
     server = {
@@ -19,6 +28,7 @@ locals {
       clusterCredentials = [for i in digitalocean_kubernetes_cluster.clusters : {
         name   = i.name
         server = i.endpoint
+        labels = local.clusters[i.name].labels
         config = {
           bearerToken = i.kube_config[0].token
           tlsClientConfig = {
@@ -106,14 +116,9 @@ resource "helm_release" "argocd-apps" {
   ]
 }
 
-# create random pet names for clusters
-resource "random_pet" "clusterNames" {
-  count = local.numClusters
-}
-
 # create managed clusters
 resource "digitalocean_kubernetes_cluster" "clusters" {
-  for_each = toset(local.clusterNames)
+  for_each = local.clusters
   name     = each.key
   region   = "sfo3"
   version  = "1.24.4-do.0"
@@ -127,4 +132,8 @@ resource "digitalocean_kubernetes_cluster" "clusters" {
 # output argocd url because I'm too lazy to look it up
 output "argocd_url" {
   value = "https://${data.digitalocean_droplet.mgmt.ipv4_address}:30443"
+}
+
+output "clusters" {
+  value = local.clusters
 }
