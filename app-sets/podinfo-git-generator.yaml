@@ -9,7 +9,7 @@ spec:
         repoURL: https://github.com/gigawhat/argocd-app-sets-v2.git
         revision: HEAD
         files:
-          - path: “clusters/**/config.yaml
+          - path: “clusters/**/config.yaml"
   template:
     metadata:
       name: “{{cluster.name}}-podinfor”
