@@ -8,14 +8,14 @@ locals {
         chartVersion = "6.2.0"
       }
     }
-    # dev-2 = {
-    #   labels = {
-    #     stage = "dev"
-    #   }
-    #   podinfo = {
-    #     chartVersion = "6.2.0"
-    #   }
-    # }
+    dev-2 = {
+      labels = {
+        stage = "dev"
+      }
+      podinfo = {
+        chartVersion = "6.2.0"
+      }
+    }
     prod-1 = {
       labels = {
         stage = "prod"

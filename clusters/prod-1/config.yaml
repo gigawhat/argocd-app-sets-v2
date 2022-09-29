@@ -1,5 +1,0 @@
-"cluster":
-  "name": "prod-1"
-  "server": "https://93e6a108-5031-46cf-b43a-b0b8d035819e.k8s.ondigitalocean.com"
-"podinfo":
-  "chartVersion": "6.2.0"
